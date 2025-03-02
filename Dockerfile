@@ -1,7 +1,7 @@
 FROM oven/bun:alpine AS install
 WORKDIR /usr/src/app
 COPY . .
-RUN install --frozen-lockfile
+RUN bun install --frozen-lockfile
 RUN bun run build -n web-client server
 
 FROM oven/bun:alpine AS runtime
