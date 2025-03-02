@@ -1,0 +1,16 @@
+# syntax=docker/dockerfile:labs
+FROM oven/bun:1-alpine AS base
+WORKDIR /usr/src/app
+COPY --parents bun.lock bunfig.toml patches package.json packages/*/package.json .
+
+FROM base AS install
+RUN bun install --frozen-lockfile
+COPY . .
+RUN bun run build server && rm -rf node_modules
+
+FROM base AS release
+RUN bun install --frozen-lockfile --production
+COPY --from=install /usr/src/app .
+
+ENV NODE_ENV=production
+CMD ["bun", "run", "packages/server/src/main.ts"]
