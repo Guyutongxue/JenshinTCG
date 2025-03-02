@@ -1,6 +1,5 @@
 build:
-	docker build . -t gi
+	sudo docker build . -t gi
 
 run:
-	docke run --rm -it gi /bin/sh
-	
+	sudo docker run --rm -it gi /bin/sh
